@@ -1,0 +1,26 @@
+{
+  "name": "sql2es",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/sql2es.js",
+  "keywords": [
+    "sql",
+    "dsl",
+    "es"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DalaranX/sql2es.git"
+  },
+  "scripts": {
+    "test": "istanbul cover _mocha"
+  },
+  "author": "qinpengfei <qinpengfei.2008@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "underscore": "~1.8.3"
+  },
+  "devDependencies": {
+    "istanbul": "^0.4.1"
+  }
+}
