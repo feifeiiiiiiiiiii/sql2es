@@ -70,7 +70,7 @@ var Stack = function(initialCapacity) {
 function convert(literal) {
     var result = literal.substring(1, literal.length - 1);
     result = result.replace(/'/g, '\'');
-    return '\'' + result + '\'';
+    return result;
 }
 
 var trans = {
