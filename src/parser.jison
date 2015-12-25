@@ -1,5 +1,6 @@
 %{
 var rpnList = [];
+
 %}
 %lex
 %options case-insensitive
@@ -25,6 +26,7 @@ var rpnList = [];
 '('		 return '('
 ')'		 return ')'
 ','		 return ','
+'LIKE'	 return 'LIKE'
 
 (\d*[.])?\d+[eE]\d+						return 'NUMBER'
 (\d*[.])?\d+							return 'NUMBER'
@@ -45,15 +47,15 @@ var rpnList = [];
 
 %left OR
 %left AND
-%left GT GTE LT LTE NQ EQ
+%left GT GTE LT LTE NQ EQ LIKE
 
 %ebnf
 %start stmt_list
 %%
 
 stmt_list: 
-	| stmt SEMICOLON EOF {return rpnList; }
-	| stmt_list SEMICOLON EOF {return rpnList; }
+	| stmt SEMICOLON EOF {var res = rpnList; rpnList = []; return res; }
+	| stmt_list SEMICOLON EOF {var res = rpnList; rpnList = []; return res; }
 	;
 
 stmt: select_stmt { rpnList.push({op: 'STMT'}); }
@@ -115,6 +117,7 @@ expr: NAME { rpnList.push({op: 'NAME', args: [$1]}); }
 	| expr GT expr {rpnList.push({op: 'GT'});}
 	| expr GTE expr {rpnList.push({op: 'GTE'});}
 	| expr LT expr {rpnList.push({op: 'LT'});}
+	| expr LIKE expr {rpnList.push({op: 'LIKE'});}
 	| expr LTE expr {rpnList.push({op: 'LTE'});}
 	| expr OR expr {rpnList.push({op: 'OR'}); }
 	| expr AND expr {rpnList.push({op: 'AND'});}
