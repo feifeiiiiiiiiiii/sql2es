@@ -6,7 +6,6 @@ var SYMBOL = ['EQ', 'NQ', 'GT', 'GTE', 'LT', 'LTE', 'OR', 'AND', "LIKE"];
 
 function sql2es(sql, callback) {
 	var rpnList = Parser.parse(util.trans.uncomment(sql));
-	console.log(rpnList);
 	var stack = new util.Stack();
 	var q = {
 		query: {}

@@ -39,3 +39,19 @@ sql2es('select a, b from test where a like "百度";', function(err, q) {
 sql2es('select a, b from test where a != "百度";', function(err, q) {
 	console.log(err, JSON.stringify(q));
 })
+
+sql2es('select a, b from test where a in (1,2,3);', function(err, q) {
+	console.log(err, JSON.stringify(q));
+})
+
+sql2es('select a, b from test where a in ("1","2","3") && (b = 2 and c = 3);', function(err, q) {
+	console.log(err, JSON.stringify(q));
+})
+
+sql2es('select a, b from test where a like "百度";', function(err, q) {
+	console.log(err, JSON.stringify(q));
+})
+
+sql2es('select * from test where a = 1 and b > 2 and (c = 3 or d = 4);', function(err, q) {
+	console.log(err, JSON.stringify(q));
+})
