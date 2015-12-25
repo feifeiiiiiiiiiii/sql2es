@@ -27,6 +27,9 @@ var rpnList = [];
 ')'		 return ')'
 ','		 return ','
 'LIKE'	 return 'LIKE'
+'IN'	 return 'IN'
+'AND'	 return 'AND'
+'OR'	 return 'OR'	 
 
 (\d*[.])?\d+[eE]\d+						return 'NUMBER'
 (\d*[.])?\d+							return 'NUMBER'
@@ -45,6 +48,7 @@ var rpnList = [];
 
 /lex
 
+%right IN
 %left OR
 %left AND
 %left GT GTE LT LTE NQ EQ LIKE
@@ -107,6 +111,10 @@ opt_limit: | LIMIT expr { rpnList.push({op: 'LIMIT', args: [$1]}); }
 
 select_expr: expr ;
 
+val_list: expr { $$ = 1; }
+	| expr ',' val_list { $$ = 1 + $3; }
+	;
+
 expr: NAME { rpnList.push({op: 'NAME', args: [$1]}); }
 	| NAME '.' NAME { rpnList.push({op: 'NAME', args: [$1, $3]}); }
 	| STRING { rpnList.push({op: 'STRING', args: [$1]}); }
@@ -123,4 +131,5 @@ expr: NAME { rpnList.push({op: 'NAME', args: [$1]}); }
 	| expr AND expr {rpnList.push({op: 'AND'});}
 	| '(' expr AND expr ')' {rpnList.push({op: 'AND'});}
 	| '(' expr OR expr ')' {rpnList.push({op: 'OR'});}
+	| expr IN '(' val_list ')' {rpnList.push({op: 'IN', args: [$4]});}
 	;

@@ -69,7 +69,8 @@ var Stack = function(initialCapacity) {
 
 function convert(literal) {
     var result = literal.substring(1, literal.length - 1);
-    result = result.replace(/'/g, '\'');
+    result = result.replace(/"/g, '');
+    console.log(result);
     return result;
 }
 
@@ -152,7 +153,14 @@ var trans = {
 		expr.term[field] = value;
 		return expr;
 	},
-
+	esTermsExpr: function(field, value) {
+		var expr = {
+			terms: {
+			}
+		};
+		expr.terms[field] = value;
+		return expr;
+	},
 	esNotTermExpr: function(field, value) {
 		var expr = {
 			must_not: {
@@ -202,7 +210,7 @@ var trans = {
 				default_field: field
 			}
 		}
-		expr.query_string.query = "\'" + value + "\'";
+		expr.query_string.query = convert(value);
 		return expr;
 	}
 }
