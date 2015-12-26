@@ -48,9 +48,9 @@ var rpnList = [];
 
 /lex
 
-%right IN
 %left OR
 %left AND
+%left IN
 %left GT GTE LT LTE NQ EQ LIKE
 
 %ebnf
