@@ -24,3 +24,14 @@ eg:
 7. select a,b,c from test where (a = 1 || b = 2) && c in (1,2,3);
 
 ```
+
+
+#### 用法
+
+```
+var sql2es = require('sql2es');
+
+sql2es('select * from test;', function(err, q) {
+  console.log(err, q);
+});
+```
