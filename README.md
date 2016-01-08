@@ -23,6 +23,8 @@ eg:
 
 7. select a,b,c from test where (a = 1 || b = 2) && c in (1,2,3);
 
+8. select a,b,c from test where (a = 1 || b = 2) && c like_in (1,2,3);
+
 ```
 
 
@@ -38,3 +40,15 @@ sql2es('select * from test;', function(err, q) {
 
 #### [Demo](http://esql.thnuclub.com)
 
+#### 操作符转义对照表
+
+key  |  value
+------------ | -------------
+= | term
+&& | must
+|| | should
+!= | must_not
+like | query_string
+like_in | query_string
+and | must
+or | should
