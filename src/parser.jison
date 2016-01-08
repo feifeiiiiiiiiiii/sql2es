@@ -27,6 +27,7 @@ var rpnList = [];
 ')'		 return ')'
 ','		 return ','
 'LIKE'	 return 'LIKE'
+'LIKE_IN'	 return 'LIKE_IN'
 'IN'	 return 'IN'
 'AND'	 return 'AND'
 'OR'	 return 'OR'	 
@@ -51,7 +52,7 @@ var rpnList = [];
 %left OR
 %left AND
 %left IN
-%left GT GTE LT LTE NQ EQ LIKE
+%left GT GTE LT LTE NQ EQ LIKE LIKE_IN
 
 %ebnf
 %start stmt_list
@@ -125,6 +126,7 @@ expr: NAME { rpnList.push({op: 'NAME', args: [$1]}); }
 	| expr GT expr {rpnList.push({op: 'GT'});}
 	| expr GTE expr {rpnList.push({op: 'GTE'});}
 	| expr LT expr {rpnList.push({op: 'LT'});}
+	| expr LIKE_IN '(' val_list ')' {rpnList.push({op: 'LIKE_IN', args: [$4]});}
 	| expr LIKE expr {rpnList.push({op: 'LIKE'});}
 	| expr LTE expr {rpnList.push({op: 'LTE'});}
 	| expr OR expr {rpnList.push({op: 'OR'}); }

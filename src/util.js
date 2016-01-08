@@ -1,3 +1,5 @@
+_ = require('underscore');
+
 var Stack = function(initialCapacity) {
 	var _initialCapacity = initialCapacity || Infinity;
 	var _elements = [];
@@ -210,6 +212,16 @@ var trans = {
 			}
 		}
 		expr.query_string.query = convert(value);
+		return expr;
+	},
+    esQueryStringInExpr: function(field, value) {
+		var expr = {
+			query_string: {
+				default_field: field
+			}
+		}
+        console.log(value);
+		expr.query_string.query = _.map(value, function(o) { return convert(o); }).join(' OR ');
 		return expr;
 	}
 }

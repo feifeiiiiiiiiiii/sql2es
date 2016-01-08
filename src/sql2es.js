@@ -102,6 +102,22 @@ function sql2es(sql, callback) {
 					expr = util.trans.esTermsExpr(item2.args[0], vals);
 					stack.push({expr: expr});
 				}
+			} else if(rpn.op == 'LIKE_IN') {
+				var len = rpn.args[0];
+				var iter = 0;
+				var vals = [];
+				while (iter < len) {
+					if (!stack.isEmpty()) {
+						var item2 = stack.pop();
+						vals.push(util.trans.value(item2.args[0], item2.op));
+					}
+					iter++;
+				}
+				if (!stack.isEmpty()) {
+					var item2 = stack.pop();
+					expr = util.trans.esQueryStringInExpr(item2.args[0], vals);
+					stack.push({expr: expr});
+				}
 			}
 		}
 	});
