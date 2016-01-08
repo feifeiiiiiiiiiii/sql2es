@@ -220,7 +220,6 @@ var trans = {
 				default_field: field
 			}
 		}
-        console.log(value);
 		expr.query_string.query = _.map(value, function(o) { return convert(o); }).join(' OR ');
 		return expr;
 	}
