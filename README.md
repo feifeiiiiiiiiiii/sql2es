@@ -52,3 +52,4 @@ like | query_string
 like_in | query_string
 and | must
 or | should
+in | terms
