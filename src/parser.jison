@@ -106,8 +106,8 @@ opt_asc_desc: {$$ = 0;}
 	| DESC {$$ = 1;}
 	;
 
-opt_limit: | LIMIT expr { rpnList.push({op: 'LIMIT', args: [$1]}); }
-	| LIMIT expr ',' expr { rpnList.push({op: 'LIMIT', args: [$2, $3]});  }
+opt_limit: | LIMIT expr { rpnList.push({op: 'LIMIT', args: [1]}); }
+	| LIMIT expr ',' expr { rpnList.push({op: 'LIMIT', args: [2]});}
 	;
 
 select_expr: expr ;
@@ -118,8 +118,8 @@ val_list: expr { $$ = 1; }
 
 expr: NAME { rpnList.push({op: 'NAME', args: [$1]}); }
 	| NAME '.' NAME { rpnList.push({op: 'NAME', args: [$1, $3]}); }
-	| STRING { rpnList.push({op: 'STRING', args: [$1]}); }
 	| NUMBER { rpnList.push({op: 'NUMBER', args: [$1]}); }
+	| STRING { rpnList.push({op: 'STRING', args: [$1]}); }
 	| STAR { rpnList.push({op: 'STAR', args: []}); }
 	| expr NQ expr {rpnList.push({op: 'NQ'});}
 	| expr EQ expr {rpnList.push({op: 'EQ'});}

@@ -8,7 +8,8 @@ function sql2es(sql, callback) {
 	var rpnList = Parser.parse(util.trans.uncomment(sql));
 	var stack = new util.Stack();
 	var q = {
-		query: {}
+		query: {},
+		sort: {}
 	};
 	_.each(rpnList, function(rpn) {
 		if (_.indexOf(SYMBOL, rpn.op) >= 0) {
@@ -54,7 +55,7 @@ function sql2es(sql, callback) {
 				stack.push({expr: expr});
 			}
 		} else {
-			if (_.indexOf(['NAME', 'NUMBER', 'STRING', 'TABLE'], rpn.op) >= 0) {
+			if (_.indexOf(['NAME', 'NUMBER', 'STRING', 'TABLE', 'GROUPBY'], rpn.op) >= 0) {
 				stack.push(rpn);
 			} else if(rpn.op == 'STMT') {
 			} else if(rpn.op == 'SELECT') {
@@ -117,6 +118,42 @@ function sql2es(sql, callback) {
 					var item2 = stack.pop();
 					expr = util.trans.esQueryStringInExpr(item2.args[0], vals);
 					stack.push({expr: expr});
+				}
+			} else if(rpn.op == 'ORDERBY') {
+				var len = rpn.args[0];
+				var iter = 0;
+				var sorts = [];
+				while (iter < len) {
+					if(!stack.isEmpty()) {
+						var item = stack.pop();
+						if(!stack.isEmpty()) {
+							var item1 = stack.pop();
+							sorts.push({k: item1.args[0], v: item.args[0]})
+						}
+					}
+					iter++;
+				}
+				sorts = sorts.reverse();
+				_.each(sorts, function(o) {
+					q.sort[o.k] = (o.v == 0 ? 'asc': 'desc');
+				})
+			} else if(rpn.op == 'LIMIT') {
+				var len = rpn.args[0];
+				var iter = 0;
+				var nums = [];
+				while (iter < len) {
+					if(!stack.isEmpty()) {
+						var item = stack.pop();
+						nums.push(util.trans.value(item.args[0], item.op));
+					}
+					iter++;
+				}
+				if(nums.length == 1) {
+					q['from'] = nums[0];
+					q['size'] = 10; //default
+				} else if (nums.length == 2) {
+					q['from'] = nums[1];
+					q['size'] = nums[0];
 				}
 			}
 		}

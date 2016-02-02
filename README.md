@@ -25,6 +25,10 @@ eg:
 
 8. select a,b,c from test where (a = 1 || b = 2) && c like_in (1,2,3);
 
+9. select a,b,c from test limit 1,10;
+
+10. select * from test order by id desc,id2 asc;
+
 ```
 
 
