@@ -23,7 +23,7 @@ eg:
 
 7. select a,b,c from test where (a = 1 || b = 2) && c in (1,2,3);
 
-8. select a,b,c from test where (a = 1 || b = 2) && c like_in (1,2,3);
+8. select a,b,c from test where (a = 1 || b = 2) && c like_in ("百度","Google","Bing");
 
 9. select a,b,c from test limit 1,10;
 
